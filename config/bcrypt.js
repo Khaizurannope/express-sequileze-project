@@ -1,11 +1,17 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
-const {
-    JWT_SECRET_KEY,
-    JWT_EXPIRES_IN
-} = process.env
+const bcrypt = require('bcryptjs');
 
-const generateToken = (user) => {
-    return jwt.sign({ id: user.id }, JWT_SECRET_KEY, { expiresIn: JWT_EXPIRES_IN })
+// Fungsi untuk mengenkripsi kata sandi
+const hashPassword = (password) => {
+  return bcrypt.hash(password, 16);
 }
-module.exports = generateToken;
+
+// Fungsi untuk membandingkan kata sandi yang dimasukkan dengan kata sandi yang dienkripsi
+const comparePassword = (password, hashPassword) => {
+  return bcrypt.compare(password, hashPassword);
+}
+
+// Ekspor fungsi-fungsi agar dapat digunakan di file lain
+module.exports = {
+  hashPassword,
+  comparePassword
+}
